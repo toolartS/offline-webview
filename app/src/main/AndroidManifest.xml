@@ -1,6 +1,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android">
 
   <application android:icon="@mipmap/ic_launcher"
+    android:icon="@mipmap/ic_launcher"
     android:label="Offline WebView"
     android:usesCleartextTraffic="true">
 
