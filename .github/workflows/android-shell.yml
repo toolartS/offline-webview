@@ -10,36 +10,32 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout
-        uses: actions/checkout@v4
+      - uses: actions/checkout@v4
 
-      - name: Set up JDK 17
-        uses: actions/setup-java@v4
+      - uses: actions/setup-java@v4
         with:
           distribution: temurin
           java-version: 17
 
-      # === PATCH THEME (NO ACTIONBAR + FULLSCREEN) ===
+      # === PATCH THEME (SAFE TEMPLATE) ===
       - name: Patch Android Theme
         run: |
           mkdir -p app/src/main/res/values
           cat > app/src/main/res/values/themes.xml << 'XML'
           <?xml version="1.0" encoding="utf-8"?>
           <resources>
-              <style name="Theme.OfflineWebView" parent="Theme.Material3.DayNight.NoActionBar">
+              <style name="Theme.OfflineWebView" parent="Theme.AppCompat.NoActionBar">
                   <item name="android:windowFullscreen">true</item>
-                  <item name="windowActionBar">false</item>
-                  <item name="windowNoTitle">true</item>
               </style>
           </resources>
           XML
 
-      # === PATCH MANIFEST (APPLY THEME) ===
+      # === APPLY THEME ===
       - name: Patch AndroidManifest
         run: |
           sed -i 's/android:theme="[^"]*"/android:theme="@style\/Theme.OfflineWebView"/' app/src/main/AndroidManifest.xml || true
 
-      # === PATCH MAINACTIVITY (FULLSCREEN + NO ZOOM) ===
+      # === PATCH MAINACTIVITY ===
       - name: Patch MainActivity
         run: |
           cat > app/src/main/java/com/example/webview/MainActivity.java << 'JAVA'
@@ -49,11 +45,9 @@ jobs:
           import android.view.WindowManager;
           import android.webkit.WebSettings;
           import android.webkit.WebView;
-
           import androidx.appcompat.app.AppCompatActivity;
 
           public class MainActivity extends AppCompatActivity {
-
               @Override
               protected void onCreate(Bundle savedInstanceState) {
                   super.onCreate(savedInstanceState);
@@ -71,15 +65,11 @@ jobs:
                   ws.setJavaScriptEnabled(true);
                   ws.setDomStorageEnabled(true);
 
-                  // === DISABLE ZOOM COMPLETELY ===
                   ws.setSupportZoom(false);
                   ws.setBuiltInZoomControls(false);
                   ws.setDisplayZoomControls(false);
                   ws.setUseWideViewPort(false);
                   ws.setLoadWithOverviewMode(false);
-
-                  webView.setVerticalScrollBarEnabled(false);
-                  webView.setHorizontalScrollBarEnabled(false);
 
                   webView.setOnTouchListener((v, e) -> e.getPointerCount() > 1);
 
@@ -88,72 +78,7 @@ jobs:
           }
           JAVA
 
-      # === PATCH HTML (ANTI ZOOM DOUBLE LOCK) ===
-      - name: Patch index.html
-        run: |
-          cat > app/src/main/assets/index.html << 'HTML'
-          <!DOCTYPE html>
-          <html lang="en">
-          <head>
-            <meta charset="UTF-8" />
-            <meta name="viewport"
-              content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-            <title>Offline WebView UI</title>
-            <style>
-              html, body {
-                margin: 0;
-                padding: 0;
-                height: 100%;
-                font-family: system-ui, sans-serif;
-                background: #f5f5f5;
-              }
-              .app {
-                display: flex;
-                flex-direction: column;
-                height: 100%;
-              }
-              header {
-                background: #111;
-                color: white;
-                padding: 16px;
-                text-align: center;
-                font-weight: 600;
-              }
-              main {
-                flex: 1;
-                padding: 16px;
-                overflow-y: auto;
-              }
-              footer {
-                background: #222;
-                color: white;
-                padding: 12px;
-                display: flex;
-                justify-content: space-around;
-                font-size: 14px;
-              }
-            </style>
-          </head>
-          <body>
-            <div class="app">
-              <header>Offline WebView UI</header>
-              <main>
-                <h2>Content Area</h2>
-                <p>This entire UI is rendered from WebView.</p>
-                <p>No Android UI components involved.</p>
-                <p>Built via GitHub Actions.</p>
-              </main>
-              <footer>
-                <div>Home</div>
-                <div>Explore</div>
-                <div>Settings</div>
-              </footer>
-            </div>
-          </body>
-          </html>
-          HTML
-
-      # === BUILD APK ===
+      # === BUILD ===
       - name: Grant gradlew permission
         run: chmod +x gradlew
 
