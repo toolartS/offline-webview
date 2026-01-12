@@ -1,19 +1,17 @@
-name: Android WebView Shell (CI Only)
+name: Android WebView Build
 
 on:
   push:
     branches: [ webview-shell-final ]
-  workflow_dispatch:
 
 jobs:
   build:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout
-        uses: actions/checkout@v4
+      - uses: actions/checkout@v4
 
-      - name: Setup JDK 17
+      - name: Set up JDK
         uses: actions/setup-java@v4
         with:
           distribution: temurin
