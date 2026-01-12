@@ -1,0 +1,47 @@
+-- Merging decision tree log ---
+manifest
+ADDED from /data/data/com.termux/files/home/projects/offline-webview/app/src/main/AndroidManifest.xml:1:1-20:12
+INJECTED from /data/data/com.termux/files/home/projects/offline-webview/app/src/main/AndroidManifest.xml:1:1-20:12
+INJECTED from /data/data/com.termux/files/home/projects/offline-webview/app/src/main/AndroidManifest.xml:1:1-20:12
+INJECTED from /data/data/com.termux/files/home/projects/offline-webview/app/src/main/AndroidManifest.xml:1:1-20:12
+	package
+		INJECTED from /data/data/com.termux/files/home/projects/offline-webview/app/src/main/AndroidManifest.xml
+	android:versionName
+		INJECTED from /data/data/com.termux/files/home/projects/offline-webview/app/src/main/AndroidManifest.xml
+	android:versionCode
+		INJECTED from /data/data/com.termux/files/home/projects/offline-webview/app/src/main/AndroidManifest.xml
+	xmlns:android
+		ADDED from /data/data/com.termux/files/home/projects/offline-webview/app/src/main/AndroidManifest.xml:1:11-69
+application
+ADDED from /data/data/com.termux/files/home/projects/offline-webview/app/src/main/AndroidManifest.xml:3:3-18:17
+INJECTED from /data/data/com.termux/files/home/projects/offline-webview/app/src/main/AndroidManifest.xml:3:3-18:17
+	android:extractNativeLibs
+		INJECTED from /data/data/com.termux/files/home/projects/offline-webview/app/src/main/AndroidManifest.xml
+	android:label
+		ADDED from /data/data/com.termux/files/home/projects/offline-webview/app/src/main/AndroidManifest.xml:4:5-36
+	android:usesCleartextTraffic
+		ADDED from /data/data/com.termux/files/home/projects/offline-webview/app/src/main/AndroidManifest.xml:5:5-40
+activity#com.example.webview.MainActivity
+ADDED from /data/data/com.termux/files/home/projects/offline-webview/app/src/main/AndroidManifest.xml:7:5-16:16
+	android:exported
+		ADDED from /data/data/com.termux/files/home/projects/offline-webview/app/src/main/AndroidManifest.xml:9:7-30
+	android:name
+		ADDED from /data/data/com.termux/files/home/projects/offline-webview/app/src/main/AndroidManifest.xml:8:7-35
+intent-filter#action:name:android.intent.action.MAIN+category:name:android.intent.category.LAUNCHER
+ADDED from /data/data/com.termux/files/home/projects/offline-webview/app/src/main/AndroidManifest.xml:11:7-14:23
+action#android.intent.action.MAIN
+ADDED from /data/data/com.termux/files/home/projects/offline-webview/app/src/main/AndroidManifest.xml:12:9-60
+	android:name
+		ADDED from /data/data/com.termux/files/home/projects/offline-webview/app/src/main/AndroidManifest.xml:12:17-58
+category#android.intent.category.LAUNCHER
+ADDED from /data/data/com.termux/files/home/projects/offline-webview/app/src/main/AndroidManifest.xml:13:9-68
+	android:name
+		ADDED from /data/data/com.termux/files/home/projects/offline-webview/app/src/main/AndroidManifest.xml:13:19-66
+uses-sdk
+INJECTED from /data/data/com.termux/files/home/projects/offline-webview/app/src/main/AndroidManifest.xml reason: use-sdk injection requested
+INJECTED from /data/data/com.termux/files/home/projects/offline-webview/app/src/main/AndroidManifest.xml
+INJECTED from /data/data/com.termux/files/home/projects/offline-webview/app/src/main/AndroidManifest.xml
+	android:targetSdkVersion
+		INJECTED from /data/data/com.termux/files/home/projects/offline-webview/app/src/main/AndroidManifest.xml
+	android:minSdkVersion
+		INJECTED from /data/data/com.termux/files/home/projects/offline-webview/app/src/main/AndroidManifest.xml

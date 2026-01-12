@@ -1,0 +1,7 @@
+com.example.webview.app-pngs-0 /data/data/com.termux/files/home/projects/offline-webview/app/build/generated/res/pngs/debug
+com.example.webview.app-resValues-1 /data/data/com.termux/files/home/projects/offline-webview/app/build/generated/res/resValues/debug
+com.example.webview.app-packageDebugResources-2 /data/data/com.termux/files/home/projects/offline-webview/app/build/intermediates/incremental/debug/packageDebugResources/merged.dir
+com.example.webview.app-packageDebugResources-3 /data/data/com.termux/files/home/projects/offline-webview/app/build/intermediates/incremental/debug/packageDebugResources/stripped.dir
+com.example.webview.app-debug-4 /data/data/com.termux/files/home/projects/offline-webview/app/build/intermediates/merged_res/debug/mergeDebugResources
+com.example.webview.app-debug-5 /data/data/com.termux/files/home/projects/offline-webview/app/src/debug/res
+com.example.webview.app-main-6 /data/data/com.termux/files/home/projects/offline-webview/app/src/main/res
