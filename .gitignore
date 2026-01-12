@@ -1,0 +1,11 @@
+# Gradle
+.gradle/
+build/
+
+# Android
+app/build/
+local.properties
+
+# OS
+*.log
+.DS_Store
