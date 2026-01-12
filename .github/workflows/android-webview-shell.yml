@@ -1,4 +1,4 @@
-name: Android WebView Shell (Final)
+name: Android WebView Shell (Native Theme)
 
 on:
   push:
@@ -12,71 +12,37 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - name: Setup JDK 17
-        uses: actions/setup-java@v4
+      - uses: actions/setup-java@v4
         with:
           distribution: temurin
           java-version: 17
 
-      - name: Setup Android SDK
-        uses: android-actions/setup-android@v3
+      - uses: android-actions/setup-android@v3
 
-      - name: Inject WebView SPA UI
+      - name: Inject SPA UI
         run: |
+          mkdir -p app/src/main/assets
           cat > app/src/main/assets/index.html << 'HTML'
           <!DOCTYPE html>
           <html>
           <head>
             <meta charset="UTF-8">
-            <meta name="viewport"
-              content="width=device-width,
-                       initial-scale=1,
-                       maximum-scale=1,
-                       user-scalable=no">
-            <title>Offline WebView</title>
+            <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
             <style>
-              html, body {
-                margin: 0;
-                padding: 0;
-                height: 100%;
-                overflow: hidden;
-                font-family: system-ui, sans-serif;
-              }
-              .app {
-                display: flex;
-                flex-direction: column;
-                height: 100%;
-              }
-              header {
-                background: #111;
-                color: white;
-                padding: 14px;
-                text-align: center;
-                font-weight: 600;
-              }
-              main {
-                flex: 1;
-                padding: 16px;
-                overflow-y: auto;
-                background: #f5f5f5;
-              }
-              footer {
-                background: #111;
-                color: white;
-                display: flex;
-                justify-content: space-around;
-                padding: 12px 0;
-              }
+              html, body { margin:0; height:100%; overflow:hidden; font-family:sans-serif }
+              .app { display:flex; flex-direction:column; height:100% }
+              header { background:#000; color:#fff; padding:14px; text-align:center }
+              main { flex:1; padding:16px; background:#f5f5f5 }
+              footer { background:#000; color:#fff; display:flex; justify-content:space-around; padding:12px }
             </style>
           </head>
           <body>
             <div class="app">
-              <header>Offline WebView UI</header>
+              <header>WebView SPA Shell</header>
               <main>
-                <h2>Content Area</h2>
-                <p>Pure WebView SPA shell</p>
+                <h2>Content</h2>
+                <p>Pure WebView</p>
                 <p>No Android UI</p>
-                <p>Zoom disabled</p>
               </main>
               <footer>
                 <div>Home</div>
@@ -88,18 +54,17 @@ jobs:
           </html>
           HTML
 
-      - name: Patch Android Theme
+      - name: Native Theme (No AppCompat)
         run: |
           mkdir -p app/src/main/res/values
           cat > app/src/main/res/values/themes.xml << 'XML'
           <resources>
-            <style name="Theme.OfflineWebView" parent="Theme.AppCompat.NoActionBar">
-              <item name="android:windowFullscreen">true</item>
-            </style>
+            <style name="Theme.OfflineWebView"
+              parent="@android:style/Theme.DeviceDefault.NoActionBar.Fullscreen"/>
           </resources>
           XML
 
-      - name: Patch AndroidManifest
+      - name: Patch Manifest
         run: |
           cat > app/src/main/AndroidManifest.xml << 'XML'
           <manifest xmlns:android="http://schemas.android.com/apk/res/android">
@@ -118,56 +83,12 @@ jobs:
           </manifest>
           XML
 
-      - name: Patch MainActivity
-        run: |
-          cat > app/src/main/java/com/example/webview/MainActivity.java << 'JAVA'
-          package com.example.webview;
-
-          import android.os.Bundle;
-          import android.view.WindowManager;
-          import android.webkit.WebSettings;
-          import android.webkit.WebView;
-          import androidx.appcompat.app.AppCompatActivity;
-
-          public class MainActivity extends AppCompatActivity {
-            @Override
-            protected void onCreate(Bundle savedInstanceState) {
-              super.onCreate(savedInstanceState);
-
-              getWindow().setFlags(
-                WindowManager.LayoutParams.FLAG_FULLSCREEN,
-                WindowManager.LayoutParams.FLAG_FULLSCREEN
-              );
-
-              setContentView(R.layout.activity_main);
-
-              WebView webView = findViewById(R.id.webview);
-              WebSettings ws = webView.getSettings();
-
-              ws.setJavaScriptEnabled(true);
-              ws.setDomStorageEnabled(true);
-
-              ws.setSupportZoom(false);
-              ws.setBuiltInZoomControls(false);
-              ws.setDisplayZoomControls(false);
-              ws.setUseWideViewPort(false);
-              ws.setLoadWithOverviewMode(false);
-
-              webView.setOnTouchListener((v, e) -> e.getPointerCount() > 1);
-
-              webView.loadUrl("file:///android_asset/index.html");
-            }
-          }
-          JAVA
-
-      - name: Grant gradlew permission
-        run: chmod +x gradlew
-
       - name: Build APK
-        run: ./gradlew --no-daemon :app:assembleDebug
+        run: |
+          chmod +x gradlew
+          ./gradlew --no-daemon :app:assembleDebug
 
-      - name: Upload APK
-        uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@v4
         with:
           name: app-debug
           path: app/build/outputs/apk/debug/app-debug.apk
