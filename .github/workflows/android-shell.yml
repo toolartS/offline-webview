@@ -17,7 +17,12 @@ jobs:
           distribution: temurin
           java-version: 17
 
-      # === PATCH THEME (SAFE TEMPLATE) ===
+      # === ENSURE APPCOMPAT DEPENDENCY ===
+      - name: Patch app/build.gradle
+        run: |
+          sed -i '/dependencies {/a\    implementation "androidx.appcompat:appcompat:1.7.0"' app/build.gradle
+
+      # === PATCH THEME ===
       - name: Patch Android Theme
         run: |
           mkdir -p app/src/main/res/values
