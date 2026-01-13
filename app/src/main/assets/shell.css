@@ -1,0 +1,33 @@
+html, body {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  width: 100%;
+  overflow-x: hidden;
+  background: #000;
+}
+
+#shell {
+  height: 100%;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  overflow-x: hidden;
+}
+
+#frame {
+  width: 100%;
+  max-width: 720px;          /* 👈 feels native on phone & tablet */
+  height: 100%;
+  border: none;
+  overflow-y: auto;
+  overflow-x: hidden;
+  background: transparent;
+}
+
+/* Tablet bonus */
+@media (min-width: 900px) {
+  #frame {
+    max-width: 840px;
+  }
+}

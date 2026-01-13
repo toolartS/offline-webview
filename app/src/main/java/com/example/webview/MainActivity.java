@@ -40,7 +40,7 @@ public class MainActivity extends AppCompatActivity {
         s.setAllowFileAccess(true);
         s.setAllowContentAccess(true);
 
-        webView.loadUrl("file:///android_asset/index.html");
+        webView.loadUrl("file:///android_asset/shell.html");
     }
 
     @Override
