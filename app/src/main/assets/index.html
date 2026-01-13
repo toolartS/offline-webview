@@ -1,58 +1,153 @@
-<!DOCTYPE html>
-<html lang="id">
+<!doctype html>
+<html lang="en">
 <head>
-<meta charset="utf-8">
-<meta name="viewport"
-  content="width=device-width,
-           initial-scale=1,
-           maximum-scale=1,
-           user-scalable=no">
-
-<title>Offline WebView</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+<title>Offline Dashboard</title>
 
 <style>
-html, body {
+body {
   margin: 0;
-  padding: 0;
-  width: 100%;
-  height: 100%;
-  overflow: hidden;
-  background: #ffffff;
-  font-family: system-ui, -apple-system, sans-serif;
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  background: linear-gradient(135deg, #1a1a2e, #16213e, #0f3460);
+  color: #e8e8e8;
 }
 
-#app {
-  width: 100%;
-  height: 100%;
+.app-wrapper {
+  padding: 20px;
   display: flex;
-  align-items: center;
-  justify-content: center;
   flex-direction: column;
+  gap: 20px;
 }
 
-h1 {
-  font-size: 28px;
-  margin: 0;
+.header {
+  text-align: center;
+  padding: 20px;
+  background: rgba(255,255,255,0.05);
+  border-radius: 16px;
 }
 
-p {
-  opacity: 0.7;
+.header-title {
+  font-size: 26px;
+  font-weight: 700;
+  background: linear-gradient(90deg, #00d9ff, #00ff88);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.status-bar {
+  display: flex;
+  justify-content: space-between;
+  padding: 12px;
+  background: rgba(0,217,255,0.1);
+  border-radius: 12px;
+}
+
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(2,1fr);
+  gap: 16px;
+}
+
+.stat-card {
+  padding: 20px;
+  background: rgba(255,255,255,0.05);
+  border-radius: 16px;
+  text-align: center;
+}
+
+.stat-value {
+  font-size: 24px;
+  font-weight: 700;
+}
+
+textarea {
+  width: 100%;
+  min-height: 100px;
+  border-radius: 10px;
+  border: none;
+  padding: 12px;
+  background: rgba(0,0,0,0.2);
+  color: #fff;
+}
+
+button {
+  margin-top: 10px;
+  padding: 12px;
+  width: 100%;
+  border-radius: 10px;
+  border: none;
+  font-weight: 600;
+  background: linear-gradient(90deg, #00d9ff, #00ff88);
 }
 </style>
 </head>
 
 <body>
-<div id="app">
-  <h1>Offline WebView</h1>
-  <p>It works 🔥</p>
+<div class="app-wrapper">
+
+<header class="header">
+  <h1 class="header-title">Offline Dashboard</h1>
+  <p>100% Offline • No Internet Required</p>
+</header>
+
+<div class="status-bar">
+  <span>Offline Ready</span>
+  <span id="time">--:--</span>
+</div>
+
+<div class="stats-grid">
+  <div class="stat-card" onclick="inc('tasks')">
+    📋
+    <div id="tasks" class="stat-value">0</div>
+    <small>Tasks</small>
+  </div>
+  <div class="stat-card" onclick="inc('notes')">
+    📝
+    <div id="notes" class="stat-value">0</div>
+    <small>Notes</small>
+  </div>
+</div>
+
+<section>
+  <h3>Quick Notes</h3>
+  <textarea id="note" placeholder="Saved locally"></textarea>
+  <button onclick="saveNote()">Save</button>
+</section>
+
 </div>
 
 <script>
-// HARD BLOCK ZOOM
-document.addEventListener('gesturestart', e => e.preventDefault());
-document.addEventListener('touchmove', e => {
-  if (e.scale && e.scale !== 1) e.preventDefault();
-}, { passive: false });
+const state = JSON.parse(localStorage.getItem("state") || '{"tasks":0,"notes":0}');
+
+function inc(k){
+  state[k]++;
+  document.getElementById(k).textContent = state[k];
+  persist();
+}
+
+function saveNote(){
+  localStorage.setItem("note", document.getElementById("note").value);
+  inc("notes");
+}
+
+function persist(){
+  localStorage.setItem("state", JSON.stringify(state));
+}
+
+function load(){
+  document.getElementById("tasks").textContent = state.tasks;
+  document.getElementById("notes").textContent = state.notes;
+  document.getElementById("note").value = localStorage.getItem("note") || "";
+}
+
+function tick(){
+  document.getElementById("time").textContent =
+    new Date().toLocaleTimeString();
+}
+
+load();
+setInterval(tick,1000);
 </script>
 </body>
 </html>
