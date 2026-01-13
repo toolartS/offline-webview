@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
+import android.webkit.WebViewClient;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.view.WindowCompat;
@@ -36,11 +37,31 @@ public class MainActivity extends AppCompatActivity {
         WebSettings s = w.getSettings();
         s.setJavaScriptEnabled(true);
         s.setDomStorageEnabled(true);
-        s.setLoadWithOverviewMode(true);
-        s.setUseWideViewPort(true);
 
-        // 🚨 LOAD SHELL, NOT INDEX
-        w.loadUrl("file:///android_asset/shell.html");
+        // 🔥 RESPONSIVE NATIVE
+        s.setUseWideViewPort(true);
+        s.setLoadWithOverviewMode(true);
+        s.setSupportZoom(false);
+
+        // 🔥 REQUIRED for local storage
+        s.setAllowFileAccess(true);
+        s.setAllowContentAccess(true);
+
+        w.setWebViewClient(new WebViewClient(){
+            @Override
+            public void onPageFinished(WebView view, String url) {
+                // 🔥 Inject CSS FIX (NO TOUCH index.html)
+                view.evaluateJavascript(
+                  "var s=document.createElement('style');" +
+                  "s.innerHTML='html,body{width:100%;height:100%;margin:0;overflow-x:hidden;}';" +
+                  "document.head.appendChild(s);",
+                  null
+                );
+            }
+        });
+
+        // ✅ LOAD DIRECT
+        w.loadUrl("file:///android_asset/index.html");
     }
 
     @Override
