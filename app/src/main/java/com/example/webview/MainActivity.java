@@ -6,7 +6,6 @@ import android.webkit.WebView;
 import android.webkit.WebViewClient;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.view.WindowCompat;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -14,30 +13,22 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        // Android ROOT layout (bukan WebView)
         setContentView(R.layout.activity_main);
 
-        // Android handle system insets
-        WindowCompat.setDecorFitsSystemWindows(getWindow(), true);
-
         WebView webView = findViewById(R.id.webview);
+        if (webView == null) {
+            throw new RuntimeException("WebView not found in layout");
+        }
 
-        WebSettings settings = webView.getSettings();
-        settings.setJavaScriptEnabled(true);
-        settings.setDomStorageEnabled(true);
-
-        // Jadikan WebView = canvas, bukan browser
-        settings.setSupportZoom(false);
-        settings.setBuiltInZoomControls(false);
-        settings.setDisplayZoomControls(false);
-
-        // Penting agar SPA merasa fullscreen
-        settings.setUseWideViewPort(true);
-        settings.setLoadWithOverviewMode(true);
+        WebSettings s = webView.getSettings();
+        s.setJavaScriptEnabled(true);
+        s.setDomStorageEnabled(true);
+        s.setAllowFileAccess(true);
+        s.setAllowContentAccess(true);
+        s.setLoadWithOverviewMode(true);
+        s.setUseWideViewPort(true);
 
         webView.setWebViewClient(new WebViewClient());
-
-        // Load SPA TANPA MODIFIKASI
         webView.loadUrl("file:///android_asset/index.html");
     }
 }
